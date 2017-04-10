@@ -27,8 +27,8 @@ $(function() {
         });
 
 
-        /* Test each feed in the allFeeds object and ensures it
-         * has a URL defined and that the URL is not empty.
+        /* Test if each feed in the allFeeds object
+         * has a URL defined and it isn't empty.
          */
         it('url defined on allFeeds', function () {
             allFeeds.forEach(function(feed) {
@@ -37,8 +37,8 @@ $(function() {
             });
         });
 
-        /* Test feed in the allFeeds object and ensures it has
-         * a name defined and that the name is not empty.
+        /* Test if each feed in the allFeeds object has
+         * a name defined and it isn't empty.
          */
         it('name defined on allFeeds', function () {
             allFeeds.forEach(function(feed) {
@@ -50,14 +50,15 @@ $(function() {
 
     /* Test suite related to menu */
     describe('The menu', function () {
-        /* Test that ensures the menu element is hidden by default. */
+        /* Test if menu element is hidden by default. */
         it('is hidden by default', function () {
             expect($('body').hasClass('menu-hidden')).toBeTruthy();
         });
 
-        /* Test that ensures the menu changes visibility when the menu icon
-         * is clicked. This test should have two expectations: does the menu
-         * display when clicked and does it hide when clicked again.
+        /* Test if menu changes visibility when the menu icon is clicked.
+         * This test should have two expectations:
+         *   does the menu display when clicked; and
+         *   does it hide when clicked again.
          */
         it('is visible after clicked', function () {
             $('.menu-icon-link').click();
@@ -74,9 +75,9 @@ $(function() {
             loadFeed(2, done);
         });
 
-        /* Test that ensures when the loadFeed function is called and completes
-         * its work, there is at least a single .entry element within the .feed
-         * container.
+        /* Test if there is at least a single .entry element within the .feed
+         * container after loadFeed function is called and completes
+         * its work.
          */
         it('has entries', function (done) {
             expect($('.feed .entry').length).toBeGreaterThan(0);
@@ -84,13 +85,24 @@ $(function() {
         });
     });
 
+    /* Test suite named "New Feed Selection" */
+    describe('New Feed Selection', function () {
+        var titleFromFirstLoad;
 
-
-
-    /* TODO: Write a new test suite named "New Feed Selection"
-
-        /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
+        /* Before testing, store first element' title with id 0
+         * (used to validate if content changed)
          */
+        beforeEach(function (done) {
+            loadFeed(0, function () {
+                titleFromFirstLoad = $('.feed .entry h2')[0].innerHTML;
+                loadFeed(1, done);
+            });
+        });
+
+        /* Test if the content changes when a new feed is loaded by the loadFeed function */
+        it('has changed after calling loadFeed again', function(done) {
+            expect($('.feed .entry h2')[0].innerHTML).not.toBe(titleFromFirstLoad);
+            done();
+        });
+    });
 }());
