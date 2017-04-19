@@ -79,9 +79,8 @@ $(function() {
          * container after loadFeed function is called and completes
          * its work.
          */
-        it('has entries', function (done) {
+        it('has entries', function () {
             expect($('.feed .entry').length).toBeGreaterThan(0);
-            done();
         });
     });
 
